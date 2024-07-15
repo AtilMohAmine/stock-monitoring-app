@@ -1,0 +1,11 @@
+type Query {
+    stocks: [Stock!]! @field(resolver: "App\\GraphQL\\Resolvers\\StockResolver@resolveStocks")
+    stock(symbol: String!): Stock @field(resolver: "App\\GraphQL\\Resolvers\\StockResolver@resolveStock")
+}
+
+type Stock {
+    symbol: String!
+    name: String!
+    price: Float!
+    change: Float!
+}
