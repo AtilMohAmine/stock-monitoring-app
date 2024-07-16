@@ -24,11 +24,25 @@ class StockResolver
                 $latestData = reset($stockData);
                 $stockName = $this->stockService->getStockName($symbol);
 
+                $timeSeries = [];
+
+                foreach ($stockData as $timestamp => $entry) {
+                    $timeSeries[] = [
+                        'time' => $timestamp,
+                        'open' => (float) $entry['1. open'],
+                        'high' => (float) $entry['2. high'],
+                        'low' => (float) $entry['3. low'],
+                        'close' => (float) $entry['4. close'],
+                        'volume' => (int) $entry['5. volume'],
+                    ];
+                }
+
                 $stocks[] = [
                     'symbol' => $symbol,
                     'name' => $stockName,
                     'price' => (float)$latestData['4. close'],
                     'change' => (float)$latestData['4. close'] - (float)$latestData['1. open'],
+                    'timeSeries' => $timeSeries,
                 ];
             }
         }
@@ -47,12 +61,26 @@ class StockResolver
 
         $latestData = reset($stockData);
         $stockName = $this->stockService->getStockName($symbol);
+        
+        $timeSeries = [];
+
+        foreach ($stockData as $timestamp => $entry) {
+            $timeSeries[] = [
+                'time' => $timestamp,
+                'open' => (float) $entry['1. open'],
+                'high' => (float) $entry['2. high'],
+                'low' => (float) $entry['3. low'],
+                'close' => (float) $entry['4. close'],
+                'volume' => (int) $entry['5. volume'],
+            ];
+        }
 
         return [
             'symbol' => $symbol,
             'name' => $stockName,
             'price' => (float)$latestData['4. close'],
             'change' => (float)$latestData['4. close'] - (float)$latestData['1. open'],
+            'timeSeries' => $timeSeries,
         ];
     }
 }

@@ -8,4 +8,14 @@ type Stock {
     name: String!
     price: Float!
     change: Float!
+    timeSeries: [TimeSeriesEntry!]!
+}
+
+type TimeSeriesEntry {
+    time: String!
+    open: Float!
+    high: Float!
+    low: Float!
+    close: Float!
+    volume: Int!
 }
