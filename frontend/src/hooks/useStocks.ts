@@ -1,21 +1,22 @@
 // src/hooks/useStocks.js
 import { useState, useEffect } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { GET_STOCKS } from '../GraphQL/Queries';
 
-const GET_STOCKS = gql`
-  query GetStocks {
-    stocks {
-      id
-      symbol
-      name
-      price
-    }
-  }
-`;
+interface Stock {
+  symbol: string;
+  name: string;
+  price: number;
+  change: number;
+}
+
+interface StocksData {
+  stocks: Stock[];
+}
 
 const useStocks = () => {
-  const { loading, error, data } = useQuery(GET_STOCKS);
-  const [stocks, setStocks] = useState([]);
+  const { loading, error, data } = useQuery<StocksData>(GET_STOCKS);
+  const [stocks, setStocks] = useState<Stock[]>([]);
 
   useEffect(() => {
     if (data) {

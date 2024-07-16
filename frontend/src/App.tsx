@@ -12,8 +12,8 @@ function App() {
       <h1>Stocks</h1>
       <ul>
         {stocks.map(stock => (
-          <li key={stock.id}>
-            {stock.symbol} - {stock.name}: ${stock.price}
+          <li key={stock.symbol}>
+            {stock.symbol} - {stock.name}: ${stock.price} | ${stock.change}
           </li>
         ))}
       </ul>
