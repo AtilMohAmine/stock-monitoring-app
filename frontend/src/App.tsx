@@ -1,8 +1,8 @@
-import React from 'react';
+import StockChart from './components/StockChart';
 import useStocks from './hooks/useStocks';
 
 function App() {
-  const { stocks, loading, error } = useStocks();
+  const { stocks, loading, error } = useStocks('5min');
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -13,7 +13,8 @@ function App() {
       <ul>
         {stocks.map(stock => (
           <li key={stock.symbol}>
-            {stock.symbol} - {stock.name}: ${stock.price} | ${stock.change}
+            {stock.symbol} - {stock.name}: ${stock.price}
+            <StockChart timeSeries={stock.timeSeries} symbol={stock.symbol} />
           </li>
         ))}
       </ul>
