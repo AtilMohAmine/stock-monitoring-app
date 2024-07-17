@@ -13,13 +13,14 @@ class StockResolver
         $this->stockService = $stockService;
     }
 
-    public function resolveStocks()
+    public function resolveStocks($root, array $args)
     {
-        $symbols = ['AAPL', 'GOOGL']; // Add more symbols as needed
+        $symbols = ['AAPL', 'GOOGL'];
+        $interval = $args['interval'];
         $stocks = [];
 
         foreach ($symbols as $symbol) {
-            $stockData = $this->stockService->getStockData($symbol);
+            $stockData = $this->stockService->getStockData($symbol, $interval);
             if ($stockData) {
                 $latestData = reset($stockData);
                 $stockName = $this->stockService->getStockName($symbol);
@@ -53,7 +54,8 @@ class StockResolver
     public function resolveStock($root, array $args)
     {
         $symbol = $args['symbol'];
-        $stockData = $this->stockService->getStockData($symbol);
+        $interval = $args['interval'];
+        $stockData = $this->stockService->getStockData($symbol, $interval);
 
         if (!$stockData) {
             return null;
