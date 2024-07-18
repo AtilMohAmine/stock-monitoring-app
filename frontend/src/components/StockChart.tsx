@@ -1,51 +1,40 @@
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/shadcn/components/ui/card"
+import TrendingUpIcon from "./TrendingUpIcon";
+import TrendingDownIcon from "./TrendingDownIcon";
+import PriceLineChart from "./PriceLineChart";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+const StockChart = ({ name, symbol, price, change, timeSeries }: Stock) => {
 
-interface TimeSerie {
-    time: string;
-    open: number;
-    high: number;
-    low: number;
-    close: number;
-    volume: number;
-}
-
-interface StockChartProps {
-    symbol: string;
-    timeSeries: TimeSerie[];
-}
-
-const StockChart = ({ symbol, timeSeries }: StockChartProps) => {
-
-    const chartData = {
-        labels: timeSeries.map(entry => entry.time) || [],
-        datasets: [
-            {
-                label: `${symbol} Stock Price`,
-                data: timeSeries.map(entry => entry.close) || [],
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: true,
-            },
-        ],
-    };
-
-    const options = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top' as const,
-            },
-            title: {
-                display: true,
-                text: `${symbol} Stock Price`,
-            },
-        },
-    };
-
-    return <Line data={chartData} options={options} />;
+    return (
+        <Card className="bg-card text-card-foreground">
+        <CardHeader>
+            <CardTitle>{name} ({symbol})</CardTitle>
+            <CardDescription>
+            <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold">${price}</div>
+                { 
+                    change >= 0
+                    ? (
+                        <div className="text-green-500 flex items-center gap-1">
+                            <TrendingUpIcon />
+                            <span>+{Number(change).toFixed(2)}%</span>
+                        </div>
+                       )
+                    : (
+                        <div className="text-red-500 flex items-center gap-1">
+                            <TrendingDownIcon />
+                            <span>{Number(change).toFixed(2)}%</span>
+                        </div>
+                      )
+                }   
+            </div>
+            </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <PriceLineChart data={timeSeries} />
+        </CardContent>
+        </Card>
+    )
 };
 
 export default StockChart;
