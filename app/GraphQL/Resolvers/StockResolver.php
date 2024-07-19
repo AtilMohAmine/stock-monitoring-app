@@ -15,7 +15,7 @@ class StockResolver
 
     public function resolveStocks($root, array $args)
     {
-        $symbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN'];
+        $symbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'IBM', 'TSLA'];
         $interval = $args['interval'];
         $stocks = [];
 
