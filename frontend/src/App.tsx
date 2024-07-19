@@ -11,7 +11,7 @@ function App() {
   if (error) return <p>Error: {error.message}</p>;
 
     return (
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col">
         <header className="bg-primary text-primary-foreground py-4 px-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <a href="#" className="font-bold text-xl">
