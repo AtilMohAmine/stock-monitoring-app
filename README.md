@@ -16,6 +16,14 @@ This project is a full-stack stock market monitoring application that provides r
 - Chart Visualization: Displays stock data in charts using Recharts.
 - Multi-Stock Monitoring: Supports monitoring multiple stocks with customizable intervals.
 
+## Architecture
+
+The architecture of this application is structured as follows:
+
+<p align="center">
+   <img src="https://github.com/user-attachments/assets/9f176eae-9719-4d43-a8cf-444c1e12559f" style="border-radius: 1%" width="90%">
+</p>
+
 ## Getting Started
 
 ### Installation
