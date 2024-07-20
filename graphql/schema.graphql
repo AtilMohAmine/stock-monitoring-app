@@ -1,5 +1,5 @@
 type Query {
-    stocks(interval: String!): [Stock!]! @field(resolver: "App\\GraphQL\\Resolvers\\StockResolver@resolveStocks")
+    stocks(interval: String!, search: String): [Stock!]! @field(resolver: "App\\GraphQL\\Resolvers\\StockResolver@resolveStocks")
     stock(symbol: String!, interval: String!): Stock @field(resolver: "App\\GraphQL\\Resolvers\\StockResolver@resolveStock")
 }
 

@@ -16,10 +16,18 @@ class StockResolver
     public function resolveStocks($root, array $args)
     {
         $symbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'IBM', 'TSLA'];
+        $searchQuery = $args['search'] ?? null;
         $interval = $args['interval'];
-        $stocks = [];
 
-        foreach ($symbols as $symbol) {
+        $filteredSymbols = $symbols;
+        if ($searchQuery) {
+            $filteredSymbols = array_filter($symbols, function ($symbol) use ($searchQuery) {
+                return stripos($symbol, $searchQuery) !== false;
+            });
+        }
+
+        $stocks = [];
+        foreach ($filteredSymbols as $symbol) {
             $stockData = $this->stockService->getStockData($symbol, $interval);
             if ($stockData) {
                 $latestData = reset($stockData);
@@ -85,4 +93,5 @@ class StockResolver
             'timeSeries' => $timeSeries,
         ];
     }
+
 }
