@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_STOCKS = gql`
-    query GetStocks($interval: String!) {
-        stocks(interval: $interval) {
+    query GetStocks($interval: String!, $search: String) {
+        stocks(interval: $interval, search: $search) {
             symbol
             name
             price

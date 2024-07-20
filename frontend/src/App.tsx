@@ -3,15 +3,32 @@ import useStocks from './hooks/useStocks';
 
 import { Input } from "@/shadcn/components/ui/input"
 import { Button } from "@/shadcn/components/ui/button"
+import { useMemo, useState } from 'react';
+import useDebounce from './hooks/useDebounce';
 
 function App() {
-  const { stocks, loading, error } = useStocks('daily');
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const { stocks, loading, error } = useStocks('daily', debouncedSearchTerm);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  const stockCharts = useMemo(() => {
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+    
+    return stocks.map((stock) => (
+      <StockChart 
+        key={stock.symbol}
+        name={stock.name}
+        symbol={stock.symbol}
+        price={stock.price}
+        change={stock.change}
+        timeSeries={stock.timeSeries}
+      />
+    ));
+  }, [stocks, loading, error]);
 
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col min-h-screen">
         <header className="bg-primary text-primary-foreground py-4 px-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <a href="#" className="font-bold text-xl">
@@ -49,6 +66,8 @@ function App() {
               <Input
                 type="search"
                 placeholder="Search stocks..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 rounded-md bg-primary/20 focus:bg-primary/30 focus:outline-none"
               />
             </form>
@@ -74,18 +93,11 @@ function App() {
         </header>
         <main className="flex-1 overflow-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-          {
-            stocks.map((stock) => (
-                <StockChart 
-                  name={stock.name}
-                  symbol={stock.symbol}
-                  price={stock.price}
-                  change={stock.change}
-                  timeSeries={stock.timeSeries}
-                />
-            ))
-          }
+          {stockCharts}
           </div>
+          {
+            !stocks.length && (<p className='flex items-center justify-center w-full font-bold text-xl mt-40'>There is no stocks to show</p>)
+          }
         </main>
         <footer className="bg-primary text-primary-foreground py-4 px-6 flex items-center justify-between">
           <div className="text-sm">&copy; 2024 Market Chart. All rights reserved.</div>
